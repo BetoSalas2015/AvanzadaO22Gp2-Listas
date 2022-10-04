@@ -44,7 +44,7 @@ void insert( char dato )
 	}
 }
 
-void insert1( char dato )
+void insertn( char dato, int n )
 {
 	nodo *nuevo = NULL;
 	nuevo = (nodo *) malloc( sizeof(nodo) );
@@ -72,6 +72,21 @@ void insert1( char dato )
 	}
 }
 
+void insert1( char dato )
+{
+	nodo *nuevo = NULL;
+	nuevo = (nodo *) malloc( sizeof(nodo) );
+	if( nuevo == NULL )					// Ya no hay memoria disponible
+	{
+		printf("No hay memoria diponible (error 1) ");
+		pausa;
+		exit(1);		//  Terminamos la ejecucion del programa
+	}
+	nuevo->info = dato;		//  Preservo la información en la lista ligada
+	nuevo->sig = raiz;
+	raiz = nuevo;			//  Raiz apunta al nodo creado
+}
+
 void imprimeLista()
 {
 	nodo *recorre = raiz;
@@ -89,13 +104,14 @@ int main()
 	
 	imprimeLista();
 	
-	insert('R');
-	insert('o');
-	insert('b');
-	insert('e');
-	insert('r');
-	insert('t');
-	insert('o');
+	insert1('R');
+	insert1('o');
+	insert1('b');
+	insert1('e');
+	insert1('r');
+	insert1('t');
+	insert1('o');
+	insertn('x', 3);
 
 	imprimeLista();
 	pausa;
