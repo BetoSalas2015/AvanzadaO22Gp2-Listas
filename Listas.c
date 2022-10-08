@@ -24,16 +24,16 @@ void insert( char dato )
 	{
 		printf("No hay memoria diponible (error 1) ");
 		pausa;
-		exit(1);		//  Terminamos la ejecucion del programa
+		exit(1);				//  Terminamos la ejecucion del programa
 	}
-	nuevo->info = dato;		//  Preservo la información en la lista ligada
+	nuevo->info = dato;			//  Preservo la información en la lista ligada
 	nuevo->sig = NULL;
-	if( raiz == NULL )		//  La lista está vacia?
+	if( raiz == NULL )			//  La lista está vacia?
 	{							// Si, está vacía
 		raiz = nuevo;			//  Raiz apunta al nodo creado
 		// raiz->sig = NULL;	//	El nodo agregado se vuelve el ultimo
 	}
-	else					// Nom la lista no esta vacía
+	else						// Nom la lista no esta vacía
 	{
 		nodo *recorre = raiz;
 		while( recorre->sig != NULL)		//  Estoy posicionado en el ultimo nodo
@@ -61,13 +61,21 @@ void insertn( char dato, int n )
 		raiz = nuevo;			//  Raiz apunta al nodo creado
 		// raiz->sig = NULL;	//	El nodo agregado se vuelve el ultimo
 	}
+	if( n == 1)
+	{
+		nuevo->sig = raiz;
+		raiz = nuevo;
+	}
 	else					// Nom la lista no esta vacía
 	{
+		int cont = 1;
 		nodo *recorre = raiz;
-		while( recorre->sig != NULL)		//  Estoy posicionado en el ultimo nodo
+		while( recorre->sig != NULL && cont < n - 1)		//  Estoy posicionado en el ultimo nodo
 		{
 			recorre = recorre ->sig;
+			cont++;
 		}
+		nuevo->sig = recorre->sig;
 		recorre->sig = nuevo;		// Inserto el nuevo nodo en la lista
 	}
 }
@@ -86,6 +94,39 @@ void insert1( char dato )
 	nuevo->sig = raiz;
 	raiz = nuevo;			//  Raiz apunta al nodo creado
 }
+
+char remueve()
+{
+	char dato;
+	nodo *recorre = raiz;
+	if( raiz == NULL)
+	{
+		printf("La lista esta vacía: no hay nada que remover\n");
+		pausa;
+		return '\0';
+	}
+	if( recorre->sig == NULL)		//  LA listaligada es de un solo nodo?
+	{
+		dato = raiz->info;			//  Preservo el dato a borrar
+		raiz = NULL;				//  Vaciamos la lista
+		free(recorre);				//  Liberamos memoria reservada por malloc()
+		return dato;				//  Reresamos el dato sacado de la lista.
+	}
+	else
+	{
+		nodo *ultimo = recorre->sig;
+		while( ultimo->sig != NULL )
+		{
+			recorre = recorre->sig;	//  alternatrivo: recorre = ultimo
+			ultimo = ultimo->sig;	//  alternativo: ultimo = recorre->sig
+		}
+		dato = ultimo->info;
+		recorre->sig = NULL;		// Se vuelve el último nodo de la lista 
+		free(ultimo);
+		return dato;
+	}
+}
+
 
 void imprimeLista()
 {
@@ -114,6 +155,11 @@ int main()
 	insertn('x', 3);
 
 	imprimeLista();
+
+	printf("El dato quie sale es: %c\n", remueve() );
+
+	imprimeLista();
+
 	pausa;
 	
 	return 0;
